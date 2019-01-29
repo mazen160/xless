@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "xless",
+    "env": {
+    "SLACK_INCOMING_WEBHOOK": "@slack-incoming-webhook"
+    },
+    "builds": [
+        { "src": "index.js", "use": "@now/node-server" },
+         { "src": "payload.js", "use": "@now/static" }
+    ],
+    "routes": [
+        { "src": "/c", "dest": "index.js" },
+        { "src": "/", "dest": "payload.js" }
+      ]
+}

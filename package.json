@@ -1,0 +1,38 @@
+{
+  "name": "xless",
+  "version": "1.0.0",
+  "description": "Xless: The Serverless Blind XSS App.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mazen160/xless.git"
+  },
+  "keywords": [
+    "XSS",
+    "serverless",
+    "blind-xss",
+    "OOB",
+    "out-of-band",
+    "exfiltration",
+    "browser-exploitation"
+  ],
+  "author": "Mazin Ahmed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mazen160/xless/issues"
+  },
+  "homepage": "https://github.com/mazen160/xless"
+}
