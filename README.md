@@ -66,7 +66,8 @@ Here are some ideas to start with:
 ## Acknowledgement
 
 * Matthew Bryant (https://github.com/mandatoryprogrammer) for the XSS Hunter project.
-* Zeit.co: for operating a great serverless platform.
+* Rami Ahmed (https://twitter.com/rami_ahmad) for the "xless" name idea.
+* Zeit.co for operating a great serverless platform.
 
 
 ## Legal Disclaimer
