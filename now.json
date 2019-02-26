@@ -9,7 +9,7 @@
          { "src": "payload.js", "use": "@now/static" }
     ],
     "routes": [
-        { "src": "/c", "dest": "index.js" },
+        { "src": "/.+", "dest": "index.js" },
         { "src": "/", "dest": "payload.js" }
       ]
 }

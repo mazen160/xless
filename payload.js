@@ -20,6 +20,7 @@ function collect_data() {
   try { collected_data["Browser Time"] = return_value(new Date().toTimeString()); } catch(e) {}
   try { collected_data["Origin"] = return_value(location.origin); } catch(e) {}
   try { collected_data["DOM"] = return_value(document.documentElement.outerHTML); } catch(e) {}
+  collected_data["DOM"] = collected_data["DOM"].slice(0, 4096)
   try { collected_data["localStorage"] = return_value(localStorage.toSource()); } catch(e) {}
   try { collected_data["sessionStorage"] = return_value(sessionStorage.toSource()); } catch(e) {}
 }

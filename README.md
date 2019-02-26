@@ -54,6 +54,32 @@ $ bash deploy.sh
 * IP Address
 
 
+# Out-of-Band Callbacks Listener
+
+Xless also works as an OOB (Out-of-Band) callbacks listener for HTTP/HTTPS requests. Any HTTP GET request that is sent to non-parent path will be alerted.
+
+### Demo
+
+```bash
+$ curl https://xless.now.sh/callback-canary
+```
+
+![OOB CallBack Listener Demo](https://raw.githubusercontent.com/mazen160/public/master/static/images/xless-screenshot-oob-callback-example.png)
+
+Or anything random, such as:
+
+```bash
+$ curl https://xless.now.sh/88bf0ecd
+```
+
+
+# Example Blind XSS payloads
+
+You can view a number of handy XSS payloads for your Xless app at `/examples`
+* URL: `https://xless.now.sh/examples`
+Once you deploy your app, you can find the examples there.
+
+
 ## Contribution
 Contribution is very welcome. Please share your ideas by Github issues and pull requests.
 
