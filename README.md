@@ -33,6 +33,8 @@ $ bash deploy.sh
 
 ```javascript
 <script src="https://xless.now.sh"></script>
+
+Enjoy bughunting
 ```
 
 
