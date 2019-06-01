@@ -4,12 +4,15 @@
   <br>
   xless
   <br>
-   <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" /> 
-   <img src="https://img.shields.io/bitbucket/issues-raw/mazen160/xless.svg?style=flat-square" alt="Issues" />
-   <img src="https://img.shields.io/github/last-commit/mazen160/xless.svg?style=flat-square" alt="Last Commit" />
 </h1>
 
-<h4 align="center">The Serverless Blind XSS App</h4>
+<h4 align="center">The Serverless Blind XSS App<br>
+  
+<p align="center">
+  <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" /> 
+  <img src="https://img.shields.io/bitbucket/issues-raw/mazen160/xless.svg?style=flat-square" alt="Issues" />
+  <img src="https://img.shields.io/github/last-commit/mazen160/xless.svg?style=flat-square" alt="Last Commit" />
+</p>
 
 ## :information_source: About The Project
 **Xless** is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.  
