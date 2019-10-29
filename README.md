@@ -7,9 +7,9 @@
 </h1>
 
 <h4 align="center">The Serverless Blind XSS App</h4>
-  
+
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" /> 
+  <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" />
   <img src="https://img.shields.io/bitbucket/issues-raw/mazen160/xless.svg?style=flat-square" alt="Issues" />
   <img src="https://img.shields.io/github/last-commit/mazen160/xless.svg?style=flat-square" alt="Last Commit" />
 </p>
@@ -103,6 +103,10 @@ Here are some ideas to start with:
 * [Rami Ahmed](https://twitter.com/rami_ahmad) for the "xless" name idea.
 * [Damian Ebelties](https://twitter.com/DamianEbelties) for the logo.
 * [Zeit.co](https://zeit.co/) for operating a great serverless platform.
+
+## Awesome Similar Projects
+
+* [Azure-xless](https://github.com/dgoumans/Azure-xless): An Xless implementation for Microsoft Azure Function by [Daan Goumans](https://twitter.com/daangoumans).
 
 
 ## Legal Disclaimer
