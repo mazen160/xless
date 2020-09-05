@@ -16,11 +16,11 @@
 
 ## :information_source: About The Project
 **Xless** is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.  
-There is no need to run a full deployment process; just setup a [zeit.co](https://zeit.co/) account and run `bash deploy.sh`.
+There is no need to run a full deployment process; just setup a [vercel.com](https://vercel.com/) account and run `bash deploy.sh`.
 That's it. You now have a fully-running Blind XSS listener that uses Slack to notify you for callbacks.
 
 ## :warning: Requirements
-* [zeit.co](https://zeit.co/) account: zeit provides a **free plan** for serverless. If you use another provider for serverless, code changes should be minimal.
+* [vercel.com](https://vercel.com/) account: Vercel provides a **free plan** for serverless. If you use another provider for serverless, code changes should be minimal.
 * Slack Incoming Webhook URL.
 
 
@@ -102,7 +102,7 @@ Here are some ideas to start with:
 * [Matthew Bryant](https://github.com/mandatoryprogrammer) for the XSS Hunter project.
 * [Rami Ahmed](https://twitter.com/rami_ahmad) for the "xless" name idea.
 * [Damian Ebelties](https://twitter.com/DamianEbelties) for the logo.
-* [Zeit.co](https://zeit.co/) for operating a great serverless platform.
+* [Vercel.com](https://vercel.com/) for operating a great serverless platform.
 
 ## Awesome Similar Projects
 
