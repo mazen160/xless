@@ -13,6 +13,7 @@ function return_value(value) {
 function screenshot() {
   return new Promise(function (resolve, reject) {
     html2canvas(document.querySelector("html"), {
+      allowTaint: true,
       onrendered: function(canvas) {
         resolve(return_value(canvas.toDataURL())) // png in dataURL format
       },
