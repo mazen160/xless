@@ -22,6 +22,7 @@ That's it. You now have a fully-running Blind XSS listener that uses Slack to no
 ## :warning: Requirements
 * [vercel.com](https://vercel.com/) account: Vercel provides a **free plan** for serverless. If you use another provider for serverless, code changes should be minimal.
 * Slack Incoming Webhook URL.
+* IMGBB (free) Account and API key - for the screenshots.
 
 
 ## :rocket: Deployment
@@ -102,6 +103,7 @@ Here are some ideas to start with:
 * [Matthew Bryant](https://github.com/mandatoryprogrammer) for the XSS Hunter project.
 * [Rami Ahmed](https://twitter.com/rami_ahmad) for the "xless" name idea.
 * [Damian Ebelties](https://twitter.com/DamianEbelties) for the logo.
+* [Rotem Reiss](https://twitter.com/2rs3c) for the screenshot feature.
 * [Vercel.com](https://vercel.com/) for operating a great serverless platform.
 
 ## Awesome Similar Projects

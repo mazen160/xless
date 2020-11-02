@@ -1,8 +1,8 @@
 {
     "version": 2,
-    "name": "xless",
     "env": {
-    "SLACK_INCOMING_WEBHOOK": "@slack-incoming-webhook"
+    "SLACK_INCOMING_WEBHOOK": "@slack-incoming-webhook",
+    "IMGBB_API_KEY": "@imgbb-api-key"
     },
     "builds": [
         { "src": "index.js", "use": "@now/node-server" },
