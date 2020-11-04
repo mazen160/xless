@@ -63,6 +63,7 @@ $ bash deploy.sh
 * LocalStorage
 * SessionStorage
 * IP Address
+* Screenshot
 
 ## :satellite: Out-of-Band (OOB) Callbacks Listener
 
@@ -82,6 +83,10 @@ Or anything random, such as:
 $ curl https://xless.vercel.app/88bf0ecd
 ```
 
+
+## :man_health_worker: Health Check
+Xless provides a `/health` endpoint to let you know that everything is configured correctly.
+The current tests are the existance of the API keys and a successful image upload to IMGBB.
 
 ##  Example Blind XSS payloads
 
