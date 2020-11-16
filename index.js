@@ -1,5 +1,5 @@
 // Xless: The Serverlesss Blind XSS App.
-// Version: v1.1
+// Version: v1.2
 // Author: Mazin Ahmed <mazin@mazinahmed.net>
 
 const express = require("express");
@@ -37,6 +37,7 @@ function generate_blind_xss_alert(body) {
     if (k === "Screenshot") {
       continue
     }
+
 
     if (body[k] === "") {
       alert += "*"+k+":* " + "```None```" + "\n"
@@ -123,7 +124,7 @@ app.post("/c", async (req, res) => {
     let data = req.body
 
     // Upload our screenshot and only then send the Slack alert
-    data["Screenshot_Url"] = ""
+    data["Screenshot URL"] = ""
 
     if (imgbb_api_key && data["Screenshot"]) {
       const encoded_screenshot = data["Screenshot"].replace("data:image/png;base64,","")
@@ -132,15 +133,15 @@ app.post("/c", async (req, res) => {
         const imgRes = await uploadImage(encoded_screenshot)
         const imgOut = JSON.parse(imgRes)
         if (imgOut.error) {
-          data["Screenshot_Url"] = imgOut.error
+          data["Screenshot URL"] = "NA"
         }
         else if(imgOut.data && imgOut.data.url_viewer) {
           // Add the URL to our data array so it will be included on our Slack message
-          data["Screenshot_Url"] = imgOut.data.url_viewer
+          data["Screenshot URL"] = imgOut.data.url_viewer
         }
       }
       catch (e) {
-        data["Screenshot_Url"] = e.message
+        data["Screenshot URL"] = e.message
       }
     }
 
