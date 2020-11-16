@@ -1,5 +1,5 @@
 // Xless: The Serverlesss Blind XSS App.
-// Version: v1.1
+// Version: v1.2
 // Author: Mazin Ahmed <mazin@mazinahmed.net>
 
 const express = require("express");
@@ -17,6 +17,7 @@ const slack_incoming_webhook = process.env.SLACK_INCOMING_WEBHOOK
 
 const app = express();
 app.use(cors());
+
 app.use(bodyParser.json({limit: '15mb'}));
 app.use(bodyParser.urlencoded({limit: '15mb', extended: true}));
 
@@ -36,6 +37,7 @@ function generate_blind_xss_alert(body) {
     if (k === "Screenshot") {
       continue
     }
+
 
     if (body[k] === "") {
       alert += "*"+k+":* " + "```None```" + "\n"
@@ -58,8 +60,14 @@ function generate_callback_alert(headers, data, url) {
   return(alert)
 }
 
+function generate_message_alert(body) {
+  var alert = "*XSSless: Message Alert*\n"
+  alert += "```\n" + body + "```\n";
+  return alert
+}
+
 async function uploadImage(image) {
-    
+
   // Return new promise
   return new Promise(function(resolve, reject) {
     const options = {
@@ -100,12 +108,23 @@ app.get("/examples", (req, res) => {
   res.end()
 })
 
+app.all("/message", (req, res) => {
+  var message = req.query.text || req.body.text
+  const alert = generate_message_alert(message)
+  data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
+
+  request.post(process.env.SLACK_INCOMING_WEBHOOK, data, (out)  => {
+    res.send("ok\n")
+    res.end()
+  });
+})
+
 
 app.post("/c", async (req, res) => {
     let data = req.body
-    
+
     // Upload our screenshot and only then send the Slack alert
-    data["Screenshot_Url"] = ""
+    data["Screenshot URL"] = ""
 
     if (imgbb_api_key && data["Screenshot"]) {
       const encoded_screenshot = data["Screenshot"].replace("data:image/png;base64,","")
@@ -114,15 +133,15 @@ app.post("/c", async (req, res) => {
         const imgRes = await uploadImage(encoded_screenshot)
         const imgOut = JSON.parse(imgRes)
         if (imgOut.error) {
-          data["Screenshot_Url"] = imgOut.error
+          data["Screenshot URL"] = "NA"
         }
         else if(imgOut.data && imgOut.data.url_viewer) {
           // Add the URL to our data array so it will be included on our Slack message
-          data["Screenshot_Url"] = imgOut.data.url_viewer
+          data["Screenshot URL"] = imgOut.data.url_viewer
         }
       }
       catch (e) {
-        data["Screenshot_Url"] = e.message
+        data["Screenshot URL"] = e.message
       }
     }
 
@@ -174,7 +193,7 @@ app.get("/health", async (req, res) => {
 })
 
 
-app.get("/*", (req, res) => {
+app.all("/*", (req, res) => {
   var headers = req.headers
   var data = req.body
   data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress

