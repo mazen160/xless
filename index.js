@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use(function (req, res, next) {
@@ -49,6 +50,11 @@ function generate_callback_alert(headers, data, url) {
   return(alert)
 }
 
+function generate_message_alert(body) {
+  var alert = "*XSSless: Message Alert*\n"
+  alert += "```\n" + body + "```\n";
+  return alert
+}
 
 app.get("/examples", (req, res) => {
   res.header("Content-Type", "text/plain")
@@ -65,6 +71,17 @@ app.get("/examples", (req, res) => {
   res.end()
 })
 
+app.all("/message", (req, res) => {
+  var message = req.query.text || req.body.text
+  const alert = generate_message_alert(message)
+  data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
+
+  request.post(process.env.SLACK_INCOMING_WEBHOOK, data, (out)  => {
+    res.send("ok\n")
+    res.end()
+  });
+})
+
 
 app.post("/c", (req, res) => {
     var data = req.body
@@ -79,7 +96,7 @@ app.post("/c", (req, res) => {
 })
 
 
-app.get("/*", (req, res) => {
+app.all("/*", (req, res) => {
   var headers = req.headers
   var data = req.body
   data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
