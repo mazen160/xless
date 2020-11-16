@@ -9,7 +9,7 @@
 <h4 align="center">The Serverless Blind XSS App</h4>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="Maintained" />
+  <img src="https://img.shields.io/maintenance/yes/2021.svg?style=flat-square" alt="Maintained" />
   <img src="https://img.shields.io/bitbucket/issues-raw/mazen160/xless.svg?style=flat-square" alt="Issues" />
   <img src="https://img.shields.io/github/last-commit/mazen160/xless.svg?style=flat-square" alt="Last Commit" />
 </p>
