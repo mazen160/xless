@@ -96,7 +96,7 @@ Once you deploy your app, you can find the examples there.
 
 ## :envelope_with_arrow: Scriptable Messages
 
-You can use Xless to send direct messages to your listener. It can be useful in data exfiltration or scripting a way to send message to your Slack app.
+You can use Xless to send direct messages to your listener. It can be useful in data exfiltration or as a scriptable way to send messages and alerts to your Slack app.
 
 ```shell
 # on your (bashrc / zshrch) file:
