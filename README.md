@@ -22,6 +22,7 @@ That's it. You now have a fully-running Blind XSS listener that uses Slack to no
 ## :warning: Requirements
 * [vercel.com](https://vercel.com/) account: Vercel provides a **free plan** for serverless. If you use another provider for serverless, code changes should be minimal.
 * Slack Incoming Webhook URL.
+* IMGBB (free) Account and API key - for the screenshots.
 
 
 ## :rocket: Deployment
@@ -62,6 +63,7 @@ $ bash deploy.sh
 * LocalStorage
 * SessionStorage
 * IP Address
+* Screenshot
 
 ## :satellite: Out-of-Band (OOB) Callbacks Listener
 
@@ -81,6 +83,10 @@ Or anything random, such as:
 $ curl https://xless.vercel.app/88bf0ecd
 ```
 
+
+## :man_health_worker: Health Check
+Xless provides a `/health` endpoint to let you know that everything is configured correctly.
+The current tests are the existance of the API keys and a successful image upload to IMGBB.
 
 ##  Example Blind XSS payloads
 
@@ -102,6 +108,7 @@ Here are some ideas to start with:
 * [Matthew Bryant](https://github.com/mandatoryprogrammer) for the XSS Hunter project.
 * [Rami Ahmed](https://twitter.com/rami_ahmad) for the "xless" name idea.
 * [Damian Ebelties](https://twitter.com/DamianEbelties) for the logo.
+* [Rotem Reiss](https://twitter.com/2rs3c) for the screenshot feature.
 * [Vercel.com](https://vercel.com/) for operating a great serverless platform.
 
 ## Awesome Similar Projects
