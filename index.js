@@ -50,13 +50,16 @@ function generate_blind_xss_alert(body) {
 
 
 function generate_callback_alert(headers, data, url) {
-  var alert = "*XSSless: Out-of-Band Callback Alert*\n";
+  const headers_str = JSON.stringify(headers)
+  
+  var alert = "*XSSless: Out-of-Band Callback Alert*\n"
   alert += `• *IP Address:* \`${data["Remote IP"]}\`\n`
   alert += `• *User-Agent:* \`${headers["user-agent"]}\`\n`
   alert += `• *Request URI:* \`${url}\`\n`
-  if (headers["Referrer"] !== undefined) {
-    alert += `• *Referrer:* \`${headers["referrer"]}\`\n`
+  if (headers["referer"] !== undefined) {
+    alert += `• *Referer:* \`${headers["referer"]}\`\n`
   }
+  alert += `• *All Headers:* \`${headers_str}\`\n`
   return(alert)
 }
 
