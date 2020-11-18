@@ -5,11 +5,9 @@
     "IMGBB_API_KEY": "@imgbb-api-key"
     },
     "builds": [
-        { "src": "index.js", "use": "@now/node-server" },
-         { "src": "payload.js", "use": "@now/static" }
+        { "src": "index.js", "use": "@now/node-server" }
     ],
     "routes": [
-        { "src": "/.+", "dest": "index.js" },
-        { "src": "/", "dest": "payload.js" }
+        { "src": "/.+", "dest": "index.js" }
       ]
 }

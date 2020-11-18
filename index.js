@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 const process = require("process");
 var request = require("request");
+const path = require("path")
 
 // Support local development with .env
 require('dotenv').config()
@@ -201,8 +202,7 @@ app.all("/*", (req, res) => {
   data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
 
   request.post(slack_incoming_webhook, data, (out)  => {
-    res.send("ok\n")
-    res.end()
+    res.sendFile(path.join(__dirname + '/payload.js'))
   });
 })
 
