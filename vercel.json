@@ -5,7 +5,7 @@
     "IMGBB_API_KEY": "@imgbb-api-key"
     },
     "builds": [
-        { "src": "index.js", "use": "@now/node-server" }
+        { "src": "index.js", "use": "@vercel/node" }
     ],
     "routes": [
         { "src": "/.+", "dest": "index.js" }
