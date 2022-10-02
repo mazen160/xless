@@ -54,10 +54,10 @@ function generate_callback_alert(headers, data, url) {
   var alert = "*XSSless: Out-of-Band Callback Alert*\n"
   alert += `• *IP Address:* \`${data["Remote IP"]}\`\n`
   alert += `• *Request URI:* \`${url}\`\n`
-  
+
   // Add all the headers
   for (var key in headers) {
-    if (headers.hasOwnProperty(key)) {       
+    if (headers.hasOwnProperty(key)) {
       alert += `• *${key}:* \`${headers[key]}\`\n`
     }
 }
