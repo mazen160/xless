@@ -86,7 +86,7 @@ $ curl https://custom-xless-deployment.vercel.app/88bf0ecd
 
 ## :man_health_worker: Health Check
 Xless provides a `/health` endpoint to let you know that everything is configured correctly.
-The current tests are the existance of the API keys and a successful image upload to IMGBB.
+The current tests are the existence of the API keys and a successful image upload to IMGBB.
 
 ##  Example Blind XSS payloads
 
