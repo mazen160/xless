@@ -1,8 +1,6 @@
 #!/bin/bash
-read -p "Enter Slack Incoming Hook: " "slack_incoming_webhook"
-vercel secret add slack-incoming-webhook "$slack_incoming_webhook"
-
-read -p "Enter IMGBB API Key: " "imgbb_api_key"
-vercel secret add imgbb-api-key "$imgbb_api_key"
-
+read -p "Enter Xless project name: " "project_name"
+vercel project add "$project_name"
+vercel env add SLACK_INCOMING_WEBHOOK 
+vercel env add IMGBB_API_KEY
 vercel deploy
