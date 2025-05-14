@@ -48,6 +48,7 @@
           .replace(/[\t ]+</g, "<")
           .replace(/>[\t ]+</g, "><")
           .replace(/>[\t ]+$/g, ">")
+          .replace("`", "")
           .slice(0, 8192);
       },
       localStorage: function () {
