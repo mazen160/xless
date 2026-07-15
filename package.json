@@ -6,12 +6,18 @@
   "directories": {
     "test": "tests"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@vercel/blob": "^2.6.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "zod": "^4.4.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

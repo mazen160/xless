@@ -88,6 +88,31 @@ $ curl https://custom-xless-deployment.vercel.app/88bf0ecd
 Xless provides a `/health` endpoint to let you know that everything is configured correctly.
 The current tests are the existence of the API keys and a successful image upload to IMGBB.
 
+## :books: Request History API
+`GET /xless-history` returns captured requests as paginated JSON (latest 10, newest-first; paginate via `_links.next`), authenticated with `Authorization: Bearer $XLESS_HISTORY_API_TOKEN`. Captured requests are persisted to a private [Vercel Blob](https://vercel.com/docs/vercel-blob) store.
+
+**Free-tier capacity:** each captured request is one Blob write (one *Advanced Operation*), and Vercel's Hobby plan includes 10,000 Advanced Operations/month — so Xless captures up to **~10,000 incoming requests per month** for free (history reads not counted). Records are small (screenshots are stored as imgbb URLs), so the 5 GB storage limit is not the bottleneck.
+
+## :robot: MCP Server
+An [MCP](https://modelcontextprotocol.io/) server is exposed at `/xless-mcp` over the [Streamable HTTP transport](https://modelcontextprotocol.io/docs/concepts/transports#streamable-http), so AI agents can read the captured history as tools. It is stateless (serverless-friendly) and authenticated with the same `Authorization: Bearer $XLESS_HISTORY_API_TOKEN` as the history API.
+
+Tools:
+* `list_requests` — latest captured requests, newest-first (`limit`, default 10; `cursor`; optional `type`).
+* `get_request` — a single captured request by `id`.
+
+Connect any MCP client (e.g. Cursor) to your deployment:
+
+```json
+{
+  "mcpServers": {
+    "xless": {
+      "url": "https://custom-xless-deployment.vercel.app/xless-mcp",
+      "headers": { "Authorization": "Bearer <XLESS_HISTORY_API_TOKEN>" }
+    }
+  }
+}
+```
+
 ##  Example Blind XSS payloads
 
 You can view a number of handy XSS payloads for your xless app at `$URL/examples`
